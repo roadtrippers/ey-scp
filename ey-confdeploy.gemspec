@@ -5,11 +5,11 @@ require 'ey/confdeploy/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "ey-confdeploy"
-  spec.version       = Ey::Confdeploy::VERSION
+  spec.version       = '0.1.0' 
   spec.authors       = ["Steven Dunlap"]
   spec.email         = ["steven@roadtrippers.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = "Quickly deploy config files (e.g. YMLs) to all EngineYard servers"
+  spec.summary       = "See README.md" 
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -20,4 +20,8 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+  
+  spec.add_dependency 'json', '~> 1.8'
+  spec.add_dependency 'net-scp', '~> 1.1'
+  spec.add_dependency 'faraday', '~> 0.8'
 end

@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+# created by Steven Dunlap of Roadtrippers
+# licensed under MIT, see LICENSE.md for information
+# absolutely no warranty provided 
+
+# right now this is pretty hacked together; maybe someday we'll clean it up
+
+require 'yaml'
+require 'faraday'
+require 'json'
+require 'optparse'
+
+ROLES = {
+  app_servers: {flag: '--app-servers', title: 'application servers'},
+  db_servers: {flag: '--db-servers', title: 'database servers'},
+  db_master: {flag: '--db-master', title: 'database master'},
+  db_slaves: {flag: '--db-slaves', title: 'database slaves'}
+}
+  
+
+options = {roles: []}
+OptionParser.new do |opts|
+    opts.banner = "Usage: ey-confdeploy [options] SOURCE_FILE PATH_ON_SERVER"
+
+    opts.on("-e", "--environment [ENVIRONMENT]", "environment to deploy to (required)") do |e|
+      options[:environment] = e
+    end
+
+    opts.on("-A", "--all", "deploy to all roles in environment") do |a|
+      options[:roles] << :all
+    end
+
+    ROLES.each do |server_type, properties|
+      opts.on( properties[:flag] , "deploy to #{properties[:title]} in environment") do |a|
+        options[:roles] << server_type 
+      end
+    end
+
+    opts.on_tail("-h", "--help", "Show this message") do
+      puts opts
+      exit
+    end
+end.parse!
+
+# get EY API token
+begin 
+  api_token_file = File.open("#{ENV['HOME']}/.eyrc") 
+rescue 
+  raise('ERROR: cannot open ~/.eyrc.  Run "ey login" in your project directory.')
+end
+api_token = YAML.load(api_token_file)['api_token']
+
+# get environment data
+conn = Faraday.new( url: 'https://cloud.engineyard.com:443', headers: {'X-EY-Cloud-Token' => api_token} )
+response = conn.get '/api/v2/environments'
+environments = JSON.parse(response.body)['environments']
+
+# parse out server lists
+environment = environments.select{|env| env['name'] == options[:environment]}
+instances = environment.select{|inst| options[:roles].include?(inst['role'].to_sym)} 
+p server_type
+p instances
