@@ -1,18 +1,8 @@
-# Ey::Confdeploy
+# ey-confdeploy
 
-TODO: Write a gem description
+Rubygem to quickly and painlessly deploy configuration files to multiple instances on EngineYard
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'ey-confdeploy'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install ey-confdeploy
 
