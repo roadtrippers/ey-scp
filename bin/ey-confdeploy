@@ -5,21 +5,23 @@
 
 # right now this is pretty hacked together; maybe someday we'll clean it up
 
+require 'pp'
 require 'yaml'
 require 'faraday'
 require 'json'
 require 'optparse'
+require 'net/scp'
 
 ROLES = {
-  app_servers: {flag: '--app-servers', title: 'application servers'},
-  db_servers: {flag: '--db-servers', title: 'database servers'},
-  db_master: {flag: '--db-master', title: 'database master'},
-  db_slaves: {flag: '--db-slaves', title: 'database slaves'}
+  app_servers: {flag: '--app-servers', roles: ['solo', 'app', 'app_master'], title: 'application servers'},
+  db_servers: {flag: '--db-servers', roles: ['solo', 'db_master', 'db_slave'], title: 'database servers'},
+  db_master: {flag: '--db-master', roles: ['solo', 'db_master'], title: 'database master'},
+  db_slaves: {flag: '--db-slaves', roles: ['solo', 'db_slave'], title: 'database slaves'}
 }
   
 
 options = {roles: []}
-OptionParser.new do |opts|
+option_parser = OptionParser.new do |opts|
     opts.banner = "Usage: ey-confdeploy [options] SOURCE_FILE PATH_ON_SERVER"
 
     opts.on("-e", "--environment [ENVIRONMENT]", "environment to deploy to (required)") do |e|
@@ -27,12 +29,12 @@ OptionParser.new do |opts|
     end
 
     opts.on("-A", "--all", "deploy to all roles in environment") do |a|
-      options[:roles] << :all
+      options[:roles] << 'all'
     end
 
     ROLES.each do |server_type, properties|
       opts.on( properties[:flag] , "deploy to #{properties[:title]} in environment") do |a|
-        options[:roles] << server_type 
+        options[:roles] = options[:roles] | properties[:roles] 
       end
     end
 
@@ -40,7 +42,33 @@ OptionParser.new do |opts|
       puts opts
       exit
     end
-end.parse!
+end
+option_parser.parse!
+
+if( options[:environment].nil? )
+  puts "Environment is required!"
+  puts option_parser.help
+  exit 1
+end
+
+if( options[:roles].empty? )
+  puts 'Warning, no role supplied; assuming all roles.'
+  options[:roles] = ['all']
+end
+
+unless( options[:source] = ARGV[0] )
+  puts 'A source file is required!'
+  puts option_parser.help
+  exit 1
+end
+
+unless( options[:destination] = ARGV[1] )
+  puts 'A destination is required!'
+  puts option_parser.help
+  exit 1
+end
+
+pp options
 
 # get EY API token
 begin 
@@ -56,7 +84,17 @@ response = conn.get '/api/v2/environments'
 environments = JSON.parse(response.body)['environments']
 
 # parse out server lists
-environment = environments.select{|env| env['name'] == options[:environment]}
-instances = environment.select{|inst| options[:roles].include?(inst['role'].to_sym)} 
-p server_type
-p instances
+environment = environments.select{|env| env['name'] == options[:environment]}.first
+if( options[:roles].include? 'all' )
+  instances = environment['instances']
+else
+  instances = environment['instances'].select{ |inst| options[:roles].include?(inst['role']) } 
+end
+servers = instances.map{ |inst| inst['public_hostname'] }
+
+#time to do the copying!
+servers.each do |server| 
+  puts "Uploading to #{server}..."
+  Net::SCP.upload!(server, 'deploy', options[:source], options[:destination] ) 
+end
+                
