@@ -1,12 +1,12 @@
 # coding: utf-8
 Gem::Specification.new do |spec|
-  spec.name          = "ey-confdeploy"
+  spec.name          = "ey-scp"
   spec.version       = '0.1.0' 
   spec.authors       = ["Steven Dunlap"]
   spec.email         = ["steven@roadtrippers.com"]
   spec.description   = "Quickly deploy config files (e.g. YMLs) to all EngineYard servers"
-  spec.summary       = "See README.md" 
-  spec.homepage      = ""
+  spec.summary       = File.open('README.md').read 
+  spec.homepage      = "http://github.com/roadtrippers/ey-scp"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

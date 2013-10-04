@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in ey-confdeploy.gemspec
+# Specify your gem's dependencies in ey-scp.gemspec
 gemspec

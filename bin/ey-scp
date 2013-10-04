@@ -22,7 +22,7 @@ ROLES = {
 
 options = {roles: []}
 option_parser = OptionParser.new do |opts|
-    opts.banner = "Usage: ey-confdeploy [options] SOURCE_FILE PATH_ON_SERVER"
+    opts.banner = "Usage: ey-scp -e ENVIRONMENT [OPTIONS] LOCAL_SOURCE_FILE REMOTE_DESTINATION"
 
     opts.on("-e", "--environment [ENVIRONMENT]", "environment to deploy to (required)") do |e|
       options[:environment] = e
@@ -68,8 +68,6 @@ unless( options[:destination] = ARGV[1] )
   exit 1
 end
 
-pp options
-
 # get EY API token
 begin 
   api_token_file = File.open("#{ENV['HOME']}/.eyrc") 
@@ -97,4 +95,3 @@ servers.each do |server|
   puts "Uploading to #{server}..."
   Net::SCP.upload!(server, 'deploy', options[:source], options[:destination] ) 
 end
-                
