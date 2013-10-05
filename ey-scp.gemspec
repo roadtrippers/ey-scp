@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
   spec.version       = '0.1.0' 
   spec.authors       = ["Steven Dunlap"]
   spec.email         = ["steven@roadtrippers.com"]
-  spec.description   = "Quickly deploy config files (e.g. YMLs) to all EngineYard servers"
+  spec.description   = "Quickly copy files (e.g. YMLs or configuration files) to multiple EngineYard servers"
   spec.summary       = File.open('README.md').read 
   spec.homepage      = "http://github.com/roadtrippers/ey-scp"
   spec.license       = "MIT"
