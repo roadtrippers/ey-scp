@@ -1,6 +1,6 @@
 # ey-scp
 
-Rubygem to quickly and painlessly deploy configuration files to multiple
+Provides a CLI to quickly and painlessly deploy configuration files to multiple
 instances on EngineYard
 
 ## Installation
@@ -15,11 +15,12 @@ instances on EngineYard
 ## Usage
 
 1. Run
+
         ey login
 
    from your project directory.
 
-2. Use the ```ey-scp``` from any directory with the following syntax:
+2. Use ```ey-scp``` from any directory with the following syntax:
 
         ey-scp -e ENVIRONMENT [OPTIONS] LOCAL_SOURCE_FILE REMOTE_DESTINATION
 
