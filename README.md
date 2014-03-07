@@ -28,6 +28,16 @@ instances on EngineYard
    
         ey-scp -e production --app-servers ~/local/project/config/foo.yml /remote/project/path/config
 
+### Specifying target instances
+
+Option | Uploads to instances with roles of
+------ | ----------------------------------
+--app-servers | solo, app_master, app
+--app-master | solo, app_master
+--db-servers | solo, db_master, db_slave
+--db-master | solo, db_master
+--db-slaves | solo, db_slave
+
 ## Contributing
 
 Right now, we could really use someone to refactor the code so that it's less
