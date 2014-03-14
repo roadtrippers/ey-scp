@@ -1,7 +1,7 @@
 # coding: utf-8
 Gem::Specification.new do |spec|
   spec.name          = "ey-scp"
-  spec.version       = '0.1.0' 
+  spec.version       = '0.2.0' 
   spec.authors       = ["Steven Dunlap"]
   spec.email         = ["steven@roadtrippers.com"]
   spec.description   = "Quickly copy files (e.g. YMLs or configuration files) to multiple EngineYard servers"

@@ -14,6 +14,7 @@ require 'net/scp'
 
 ROLES = {
   app_servers: {flag: '--app-servers', roles: ['solo', 'app', 'app_master'], title: 'application servers'},
+  app_master: {flag: '--app-master', roles: ['solo', 'app_master'], title: 'application master'},
   db_servers: {flag: '--db-servers', roles: ['solo', 'db_master', 'db_slave'], title: 'database servers'},
   db_master: {flag: '--db-master', roles: ['solo', 'db_master'], title: 'database master'},
   db_slaves: {flag: '--db-slaves', roles: ['solo', 'db_slave'], title: 'database slaves'}
