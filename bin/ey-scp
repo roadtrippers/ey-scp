@@ -17,7 +17,8 @@ ROLES = {
   app_master: {flag: '--app-master', roles: ['solo', 'app_master'], title: 'application master'},
   db_servers: {flag: '--db-servers', roles: ['solo', 'db_master', 'db_slave'], title: 'database servers'},
   db_master: {flag: '--db-master', roles: ['solo', 'db_master'], title: 'database master'},
-  db_slaves: {flag: '--db-slaves', roles: ['solo', 'db_slave'], title: 'database slaves'}
+  db_slaves: {flag: '--db-slaves', roles: ['solo', 'db_slave'], title: 'database slaves'},
+  util_servers: {flat: '--util-servers', roles: ['solo', 'util'], title: 'utility servers'}
 }
   
 

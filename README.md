@@ -37,6 +37,7 @@ Option | Uploads to instances with roles of
 --db-servers | solo, db_master, db_slave
 --db-master | solo, db_master
 --db-slaves | solo, db_slave
+--util-servers | solo, util
 
 ## Contributing
 
