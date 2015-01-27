@@ -93,7 +93,11 @@ end
 servers = instances.map{ |inst| inst['public_hostname'] }
 
 #time to do the copying!
-servers.each do |server| 
-  puts "Uploading to #{server}..."
-  Net::SCP.upload!(server, 'deploy', options[:source], options[:destination] ) 
+servers.each do |server|
+  begin
+    puts "Uploading to #{server}..."
+    Net::SCP.upload!(server, 'deploy', options[:source], options[:destination] )
+  rescue Net::SCP::Error => ex
+    STDERR.puts "Error uploading to #{server}: #{ex.message}"
+  end
 end
